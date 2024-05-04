@@ -9,6 +9,8 @@ import Header from "../view/Header";
 import Dashboardfb from "../view/Dashboardfb/app";
 import Detailfb from "../view/Detailfb/index"
 import Profile from "../view/Profile";
+import Update from "../view/Update";
+
 const router = createBrowserRouter([
 
   {
@@ -55,7 +57,11 @@ const router = createBrowserRouter([
   element: <Profile/>,
 
 },
+{
+  path: '/update',
+  element: <Update/>,
 
+},
   ]);
   
   function Router () {

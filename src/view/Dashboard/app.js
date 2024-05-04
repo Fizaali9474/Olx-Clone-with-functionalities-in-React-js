@@ -9,7 +9,7 @@ function  Dashboard() {
  // const navigate = useNavigate();//
    const [Posts, setPosts] = useState([]);
 
-  /*  useEffect(() => {
+    useEffect(() => {
         getPostFromAPI();
       }, []);
     
@@ -19,14 +19,14 @@ function  Dashboard() {
           .then((res) => {
             setPosts(res.products);
           });
-      }console.log(Posts)*/
+      }console.log(Posts)
 
-    //  if (!Posts.length)//
-      /* {*/
-    /*  return  <div>
+     if (!Posts.length)
+     {
+      return  <div>
           <img src='https://i.pinimg.com/originals/c7/e1/b7/c7e1b7b5753737039e1bdbda578132b8.gif' />
-        </div>*/
-    /* }*/
+        </div>
+   }
 
 
     

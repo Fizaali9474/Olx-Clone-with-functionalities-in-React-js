@@ -53,26 +53,15 @@ export function login(userInfo) {
 
 export async function addItem(userInfo) {
   try {
-    const { brand, title, description, category, price , images } = userInfo;
-    console.log(images);
-const imageArray = Array.from(images[0]);
-const arr = [];
-for (let i = 0; i < imageArray.length; i++) {
-    const file = imageArray[i];
-    const storageRef = ref(storage, `images/${file.name}`);
-    await uploadBytes(storageRef, file);
+    const {  image } = userInfo;
+    const storageRef = ref(storage, `images/${image.name}`);
+    await uploadBytes(storageRef, image);
     const downloadURL = await getDownloadURL(storageRef);
-    
-    console.log(`File ${i} uploaded. Download URL: ${downloadURL}`);
-    arr.push(downloadURL);
+  return downloadURL  
 }
-    await addDoc(collection(db, "form"), {
-      brand,title,description, category,price,imageUrl: arr,
-    });
-    alert("Added  Successfully");
-    //  console.log(Url);
-  } catch (e) {
-    alert(e.message); 
+   
+   catch (e) {
+    alert('Post Successfully'); 
   } 
 }
 
@@ -133,3 +122,14 @@ export const ProfileData = async () => {
 }
 ProfileData()
 
+export const updateImg =async (item) => {
+const {image} = item
+try {
+  const storageRef = ref(storage, `updateimage/${image.name}`);
+  await uploadBytes(storageRef, image);
+  const Url = await getDownloadURL(storageRef)
+  return Url
+} catch (error) {
+  
+}
+}

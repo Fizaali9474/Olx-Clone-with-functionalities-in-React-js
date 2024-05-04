@@ -9,11 +9,22 @@ const Sell = () => {
   const [description, setDescription] = useState()
   const [category, setCategory] = useState()
   const [price, setPrice] = useState()
-  const [ images ,setImages  ]=useState()
-  console.log(images)
+  const [ image ,setImage  ]=useState()
+
+
+
   const handleSubmit = async () => {
-    await addItem({ brand, title, description, category, price , images })
-    
+    const imgURL = await addItem({image})
+    console.log(imgURL,"URL")
+    await fetch("http://localhost:3001/products/add",{
+      method:"POST",
+     headers :{
+      "Content-Type": "application/json",
+     },
+      body: JSON.stringify({
+        brand,title,description,category,price, image:imgURL
+      })
+    }).then(res => res.json()).then(res => console.log(res.message))
   }
   return (
     <div className='max-w-[1000px] mx-auto mt-10 con'>
@@ -36,7 +47,7 @@ const Sell = () => {
         </div>
         <div className='flex flex-col gap-1 price-div'>
           <label htmlFor="" className="price-head">Price</label>
-          <input onChange={(e) => setPrice(e.target.value)} className='price-input' type="text" placeholder='Price' />
+          <input onChange={(e) => setPrice(e.target.value)} className='price-input' type="number" placeholder='Price' />
         </div>
         <div className='flex flex-col gap-1 des-div'>
           <label htmlFor="" className="des-head">Description</label>
@@ -44,7 +55,7 @@ const Sell = () => {
         </div>
 <div className='flex flex-col gap-1 des-div' >
 <label htmlFor="password" className="img-head">Images</label>
-<input onChange={(e) => setImages([e.target.files])} multiple  className='img-div' 
+<input onChange={(e) => setImage(e.target.files[0])}   className='img-div' 
 type="file" 
 placeholder='Images' />
   </div>

@@ -16,7 +16,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
+import axios from "axios";
 //import './styles.css';//
 
 // import required modules
@@ -27,32 +27,32 @@ function Detailfb() {
   const db = getFirestore()
   const { id } = useParams()
   const [product, setProduct] = useState()
+ 
+  
+  console.log("product", product);
 
   useEffect(() => {
-    getProduct()
-  }, [id, db])
-
-  const getProduct = async () => {
-    try {
-
-      const docRef = doc(db, "form", id);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setProduct(docSnap.data())
-      } else {
-
-        console.log("No such document!");
-      }
-
-    }
-    catch (e) {
-
-      alert(e.message);
-    }
-  }
-
+    
+      const getProductDetail = async () => {
+        console.log('Id:', id);
+      
+        const fetchProducts = async () => {
+          try {
+            
+            if (id) {
+              const response = await axios.get('http://localhost:3001/products');
+              setProduct(response.data.data.find((e) => e._id == id));
+            }
+          } catch (error) {
+            console.error('Error fetching products:', error);
+          }
+        };
+        
+        // }
+        fetchProducts();
+      };
+      getProductDetail();
+  }, [id]); 
 
   return (
 
@@ -67,7 +67,7 @@ function Detailfb() {
           <div className='main'>
             <div className='imag'>
               {/* <img src={product.imageUrl} alt={'img product'}/> */}
-              {
+              
                 <Swiper
 
                   navigation={true}
@@ -76,17 +76,18 @@ function Detailfb() {
                   className="mySwiper"
                 >
             {      
-                product.imageUrl.map((item,index)=>( 
-                <    SwiperSlide style={{width:"300px" , height:"700px"  }}  >
-                <img src={item}/>
-            
-                </SwiperSlide> 
-                
-                )
-                )}
+                 product &&  (
+
+                   <    SwiperSlide style={{width:"300px" , height:"700px"  }}  >
+                   <img src={product.image}/>
+               
+                   </SwiperSlide> 
+                   
                   
+                     
+                  )
+                }
                 </Swiper>
-              }
             </div>
             <div className='detail'>
               <>
@@ -94,7 +95,7 @@ function Detailfb() {
 
 
               <h2 style={{ fontSize: "20px" }} className='work'>{product.tittle}</h2>
-              <h3 style={{ fontSize: "30px" }} className='work'>{product.price}</h3>
+              <h3  style={{ fontSize: "30px" }} className='work'>RS{product.price}</h3>
               <h4 style={{ fontSize: "20px" }} className='work'>Description: {product.description}</h4>
               <h5 style={{ fontSize: "20px" }} className='work'>Brand: {product.brand}</h5>
               <h6 style={{ fontSize: "20px" }} className='work'>Category: {product.category}
